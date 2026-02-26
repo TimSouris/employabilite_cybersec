@@ -9,8 +9,7 @@ venv/
 .venv/
 
 # Data (on commit pas les données brutes pour l'instant)
-data/raw/*
-!data/raw/.gitkeep
+data/*.csv
 
 # IDE
 .vscode/
@@ -30,3 +29,4 @@ Thumbs.db
 # Power BI temp files
 *.tmp
 *.pbix.tmp
+.env

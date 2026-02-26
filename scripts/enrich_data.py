@@ -63,7 +63,24 @@ KEYWORDS = {
     "Rigueur": [r"rigueur", r"rigoureux"],
     "Curiosité": [r"curiosité", r"curieux"],
     "Travail d'équipe": [r"travail d'équipe", r"team player", r"esprit d'équipe"],
-    "Gestion de projet": [r"gestion de projet", r"chef de projet"]
+    "Gestion de projet": [r"gestion de projet", r"chef de projet"],
+
+    #Outils cybersécurité offensifs
+    "Nmap": [r"nmap"],
+    "Metasploit": [r"metasploit"],
+    "Wireshark": [r"wireshark"],
+    "Burp Suite": [r"burp suite", r"burpsuite"],
+    "Kali Linux": [r"kali linux", r"kalilinux"],
+
+    #CTF platforms
+    "Hack The Box": [r"hack the box", r"htb"],
+    "TryHackMe": [r"tryhackme", r"thm"],
+
+    #outils cybersécurité défensifs
+    "Splunk": [r"splunk"],
+    "ELK": [r"elk", r"elasticsearch", r"logstash", r"kibana"],
+    "SIEM": [r"siem"],
+    "EDR": [r"edr"],
 }
 
 EDUCATION_LEVELS = {
