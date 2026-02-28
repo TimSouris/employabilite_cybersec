@@ -8,14 +8,14 @@ import scripts.enrich_data
 import scripts.clean_data
 
 
-# banner = pyfiglet.figlet_format("F*ck le chomage")
-# print(banner)
-# print("\n\nLancement du scraping...\n\n")
-# scripts.scrapers.scraper_francetravail.main()
-# scripts.scrapers.scraper_apec.main()
-# print("Scraping terminé !\nEnrichissement de la donnée en cours...")
-# scripts.enhance_descriptions_selenium.main()
-# scripts.enhance_descriptions_selenium_wttj.main()
+banner = pyfiglet.figlet_format("F*ck le chomage")
+print(banner)
+print("\n\nLancement du scraping...\n\n")
+scripts.scrapers.scraper_francetravail.main()
+scripts.scrapers.scraper_apec.main()
+print("Scraping terminé !\nEnrichissement de la donnée en cours...")
+scripts.enhance_descriptions_selenium.main()
+scripts.enhance_descriptions_selenium_wttj.main()
 scripts.enrich_data.main()
 scripts.clean_data.main()
 print("Enrichissement terminé !\n Génération du fichier final...")
