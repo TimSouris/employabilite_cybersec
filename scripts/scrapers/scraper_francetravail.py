@@ -1,11 +1,10 @@
 import os
-# import time
 import requests
 import pandas as pd
-from datetime import datetime
+import time
 from dotenv import load_dotenv
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 CLIENT_ID = os.getenv("CLIENT_ID")
@@ -23,9 +22,10 @@ KEYWORDS = [
     "assistant securite", "assistant RSSI", "technicien securite", "technicien cyber",
     "consultant cyber junior", "consultant securite junior", "pentester junior",
     "auditeur securite junior", "auditeur cyber junior", "security analyst junior",
-    "cybersecurity analyst junior", "blue team junior", "GRC junior", "conformite securite",
+    "cybersecurity analyst junior", "blue team junior", "conformite securite", "consultant cybersecurite"
 ]
-PAGE_SIZE = 100
+
+PAGE_SIZE = 150
 MAX_OFFERS_PER_KEYWORD = 300
 
 TIMEOUT = 15
@@ -80,7 +80,7 @@ def parse_offre(o):
         "description": o.get("description"), # Le champ clé !
         "lien": o.get("origineOffre", {}).get("urlOrigine"),
         "date_publication": o.get("dateCreation", "")[:10],
-        "date_scraping": datetime.now().strftime("%Y-%m-%d"),
+        "date_scraping": time.strftime("%Y-%m-%d"),
         "source": "France Travail",
     }
 
@@ -98,7 +98,7 @@ def main():
         current_count = 0
         
         # Pagination
-        for start in range(MAX_OFFERS_PER_KEYWORD, PAGE_SIZE):
+        for start in range(0, MAX_OFFERS_PER_KEYWORD, PAGE_SIZE):
             end = start + PAGE_SIZE - 1
             print(f"  Page {start}-{end}...")
             
@@ -122,21 +122,28 @@ def main():
             if len(results) < PAGE_SIZE:
                 break
                 
-            #time.sleep(1) # Poil de politesse
+            time.sleep(0.1) # 10  appels / seconde max selon la doc
 
     print(f"Total offres récupérées : {len(all_offers)}")
 
     if all_offers:
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         data_dir = os.path.join(base_dir, "data")
         os.makedirs(data_dir, exist_ok=True)
         
         output = os.path.join(data_dir, "offres_francetravail_raw.csv")
         
         df = pd.DataFrame(all_offers)
-        # Si fichier existe, on peut merger ou écraser. Ici on écrase pour repartir propre
-        df.to_csv(output, index=False, encoding="utf-8-sig")
-        print(f"Sauvegarde dans {output}")
+        # Si fichier existe, on peut merger ou écraser. Ici on merge pour éviter les pertes.
+        # Commmenter jusqu'au else pour écraser à chaque fois.
+        if os.path.exists(output):
+            df_existing = pd.read_csv(output, encoding="utf-8-sig")
+            df_combined = pd.concat([df_existing, df], ignore_index=True).drop_duplicates(subset=["lien"])
+            df_combined.to_csv(output, index=False, encoding="utf-8-sig")
+            print(f"Fusionné avec les données existantes. Total unique: {len(df_combined)}")
+        else:
+            df.to_csv(output, index=False, encoding="utf-8-sig")
+            print(f"Sauvegarde dans {output}")
     else:
         print("Aucune offre trouvée.")
 

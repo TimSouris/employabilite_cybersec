@@ -1,5 +1,4 @@
 import pandas as pd
-import os
 
 file_path = 'data/offres_apec_raw.csv'
 print(f"Reading {file_path}...")

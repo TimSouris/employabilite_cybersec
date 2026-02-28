@@ -1,24 +1,25 @@
-
 import re
 import time
 import pandas as pd
 import random
 from datetime import datetime
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 import os
 
 BASE_URL = "https://www.welcometothejungle.com"
 KEYWORDS = [
-    "Data Scientist",
-    "Data Analyst",
-    "Data Engineer",
-    "Machine Learning Engineer",
-    "Intelligence Artificielle"
+    "cybersecurite", 
+    "cybersécurité", "securite informatique", "sécurité informatique",
+    "analyste SOC", "SOC junior", "analyste cyber junior", "analyste securite junior",
+    "assistant securite", "assistant RSSI", "technicien securite", "technicien cyber",
+    "consultant cyber junior", "consultant securite junior", "pentester junior",
+    "auditeur securite junior", "auditeur cyber junior", "security analyst junior",
+    "cybersecurity analyst junior", "blue team junior", "conformite securite", "consultant cybersecurite"
 ]
 PAGES_PER_KEYWORD = 5  # 5 pages * 30 offres = 150 par mot clé -> Total ~750
 
@@ -26,17 +27,16 @@ PAGES_PER_KEYWORD = 5  # 5 pages * 30 offres = 150 par mot clé -> Total ~750
 CONTRATS = ['alternance', 'stage', 'cdi', 'cdd', 'freelance', 'alternant']
 
 def init_driver():
-    options = webdriver.ChromeOptions()
+    options = webdriver.FirefoxOptions()
     options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--window-size=1920,1080')
-    options.add_argument(
-        'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
+    options.add_argument('--width=1920')
+    options.add_argument('--height=1080')
+    options.set_preference(
+        'general.useragent.override',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0'
     )
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
+    driver = webdriver.Firefox(
+        service=FirefoxService(GeckoDriverManager().install()),
         options=options
     )
     return driver
@@ -133,27 +133,29 @@ def scrape_job_details(driver, url):
         driver.get(url)
         # Attente d'un élément de contenu (le main ou une section de description)
         WebDriverWait(driver, 8).until(
-            EC.presence_of_element_located((By.TAG_NAME, "main"))
+            EC.presence_of_element_located((By.ID, "the-position-section"))
         )
         time.sleep(1) # Rendu final
 
         # Essayer de récupérer le texte principal
         # WTTJ change souvent ses classes, le tag main est le plus sûr pour le contenu global
-        main_content = driver.find_element(By.TAG_NAME, "main")
-        text = main_content.text
+        main_content = driver.find_element(By.ID, "the-position-section")
+        text = main_content.text.strip()
         return text
     except Exception as e:
-        # print(f"Erreur description: {e}") 
+        print(f"Erreur description: {e}") 
         return ""
 
 def main():
     driver = init_driver()
     all_results = []
     seen_links = set()
-
-    print("Démarrage du scraping WTTJ complet...")
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    data_dir = os.path.join(base_dir, "data")
 
     try:
+
+        print("Démarrage du scraping WTTJ complet...")
         # 1. Récupération de tous les liens (Phase Listing)
         for kw in KEYWORDS:
             print(f"\n--- Recherche: {kw} ---")
@@ -168,13 +170,12 @@ def main():
                         seen_links.add(off['lien'])
                         all_results.append(off)
                 
-                time.sleep(random.uniform(2, 4))
-        
+                time.sleep(3)
+            
         print(f"\nPhase 1 terminée: {len(all_results)} offres uniques trouvées.")
         
         # Sauvegarde intermédiaire des listings (au cas où)
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        data_dir = os.path.join(base_dir, "data")
+        
         os.makedirs(data_dir, exist_ok=True)
         pd.DataFrame(all_results).to_csv(os.path.join(data_dir, "offres_wttj_listings_only.csv"), index=False, encoding='utf-8-sig')
         print("Sauvegarde intermédiaire: offres_wttj_listings_only.csv")
@@ -201,11 +202,16 @@ def main():
             df_one = pd.DataFrame([offre])
             df_one.to_csv(output_path, mode='a', header=False, index=False, encoding='utf-8-sig')
 
-            # Délai respectueux (augmenté pour éviter blocage)
-            time.sleep(random.uniform(2.0, 5.0))
+            # Délai respectueux
+            time.sleep(3)
 
     finally:
         driver.quit()
+
+        # Supprimer la sauvegarde intermédiaire
+        interm_path = os.path.join(data_dir, "offres_wttj_listings_only.csv")
+        if os.path.exists(interm_path):
+            os.remove(interm_path)
 
     print(f"Scraping terminé. Données sauvegardées dans {output_path}")
 

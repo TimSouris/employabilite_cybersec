@@ -1,21 +1,18 @@
-
 import requests
 import pandas as pd
 from datetime import datetime
 import time
-import random
 import os
 import re
 
 # Configuration
 KEYWORDS = [
-    "Data Scientist",
-    "Data Analyst",
-    "Data Engineer",
-    "Machine Learning Engineer",
-    "Intelligence Artificielle",
-    "Business Intelligence",
-    "Data Steward"
+    "cybersecurite", "cybersécurité", "securite informatique", "sécurité informatique",
+    "analyste SOC", "SOC junior", "analyste cyber junior", "analyste securite junior",
+    "assistant securite", "assistant RSSI", "technicien securite", "technicien cyber",
+    "consultant cyber junior", "consultant securite junior", "pentester junior",
+    "auditeur securite junior", "auditeur cyber junior", "security analyst junior",
+    "cybersecurity analyst junior", "blue team junior", "conformite securite", "consultant cybersecurite"
 ]
 NUM_PAGES_PER_KEYWORD = 40  # 40 * 20 = 800 offres potentielles par mot clé
 SEARCH_URL = "https://www.apec.fr/cms/webservices/rechercheOffre"
@@ -37,8 +34,8 @@ def clean_html(raw_html):
     cleantext = re.sub(r'\s+', ' ', cleantext).strip()
     return cleantext
 
-def get_apec_offers():
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+def main():
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     data_dir = os.path.join(base_dir, "data")
     os.makedirs(data_dir, exist_ok=True)
     
@@ -66,7 +63,7 @@ def get_apec_offers():
                 }
                 
                 # Délai aléatoire pour être gentil (même si c'est une API publique)
-                time.sleep(random.uniform(0.5, 1.5))
+                time.sleep(2)
                 
                 r = requests.post(SEARCH_URL, headers=HEADERS, json=payload, timeout=15)
                 
@@ -133,4 +130,4 @@ def get_apec_offers():
     print("Terminé.")
 
 if __name__ == "__main__":
-    get_apec_offers()
+    main()

@@ -8,43 +8,25 @@ import os
 KEYWORDS = {
     # Langages de programmation
     "Python": [r"python"],
-    "SQL": [r"sql"],
-    "R": [r"\bR\b", r"RStudio"],
-    "Java": [r"\bjava\b"],
-    "Scala": [r"scala"],
+    "C": [r"\bC\b"],
     "C++": [r"c\+\+"],
-    "SAS": [r"\bsas\b"],
-    "Matlab": [r"matlab"],
-    "VBA": [r"\bvba\b"],
+    "C#": [r"c#"],
+    "Java": [r"\bjava\b"],
+    "JavaScript": [r"javascript", r"js"],
+    "Go": [r"\bgo\b", r"golang"],
+    "Rust": [r"rust"],
+    "Bash": [r"bash", r"shell scripting"],
+    "PowerShell": [r"powershell"],
+    "SQL": [r"sql"],
+    "Assembly": [r"assembly", r"assembleur"],
 
-    # Data Engineering & Big Data
-    "Spark": [r"spark", r"pyspark"],
-    "Hadoop": [r"hadoop", r"hdfs"],
-    "Kafka": [r"kafka"],
-    "Hive": [r"hive"],
-    "Airflow": [r"airflow"],
-    "dbt": [r"dbt"],
-    "Snowflake": [r"snowflake"],
-    "Databricks": [r"databricks"],
-    "BigQuery": [r"bigquery", r"big query"],
-    "Redshift": [r"redshift"],
-    
-    # Data Science Libs
-    "Pandas": [r"pandas"],
-    "NumPy": [r"numpy"],
-    "Scikit-learn": [r"scikit-learn", r"sklearn"],
-    "TensorFlow": [r"tensorflow", r"tf"],
-    "PyTorch": [r"pytorch"],
-    "Keras": [r"keras"],
-    "NLP": [r"nlp", r"natural language processing", r"traitement automatique du langage"],
-    "Computer Vision": [r"computer vision", r"vision par ordinateur", r"opencv"],
-
-    # Visualization
-    "Power BI": [r"power bi", r"powerbi", r"dax"],
-    "Tableau": [r"tableau"],
-    "Looker": [r"looker"],
-    "Qlik": [r"qlik", r"qliksense", r"qlikview"],
-    "Streamlit": [r"streamlit"],
+    # Networking & Protocols
+    "TCP/IP": [r"tcp/ip", r"tcp"],
+    "DNS": [r"\bdns\b"],
+    "VPN": [r"\bvpn\b"],
+    "BGP": [r"\bbgp\b"],
+    "OSPF": [r"\bospf\b"],
+    "SSL/TLS": [r"ssl/tls", r"ssl", r"tls"],
 
     # Cloud & DevOps
     "AWS": [r"aws", r"amazon web services"],
@@ -54,7 +36,60 @@ KEYWORDS = {
     "Kubernetes": [r"kubernetes", r"k8s"],
     "Git": [r"git", r"github", r"gitlab"],
     "Linux": [r"linux"],
+    "Windows Server": [r"windows server"],
     "CI/CD": [r"ci/cd", r"cicd", r"jenkins", r"gitlab ci"],
+
+    # Outils Pentest & Offensive Security
+    "Nmap": [r"nmap"],
+    "Metasploit": [r"metasploit"],
+    "Wireshark": [r"wireshark"],
+    "Tcpdump": [r"tcpdump"],
+    "Burp Suite": [r"burp suite", r"burpsuite"],
+    "SQLmap": [r"sqlmap"],
+    "Hydra": [r"hydra"],
+    "John The Ripper": [r"john the ripper", r"john"],
+    "Hashcat": [r"hashcat"],
+    "Aircrack-ng": [r"aircrack-ng", r"aircrack"],
+    "Nessus": [r"nessus"],
+    "OpenVAS": [r"openvas"],
+    "Kali Linux": [r"kali linux", r"kalilinux"],
+
+    # Outils Security & Defensive
+    "Splunk": [r"splunk"],
+    "ELK Stack": [r"elk", r"elasticsearch", r"logstash", r"kibana"],
+    "SIEM": [r"siem"],
+    "IDS/IPS": [r"ids/ips", r"ids", r"ips", r"suricata", r"snort"],
+    "EDR": [r"edr", r"endpoint detection response"],
+    "WAF": [r"\bwaf\b", r"web application firewall"],
+    "Firewall": [r"firewall", r"palo alto", r"checkpoint", r"fortinet"],
+
+    # Cybersecurity Concepts & Practices
+    "Pentest": [r"pentest", r"penetration testing", r"penetration test"],
+    "Vulnerability Assessment": [r"vulnerability assessment", r"vulnerabilité"],
+    "OSINT": [r"osint", r"open source intelligence", r"reconnaissance"],
+    "Threat Intelligence": [r"threat intelligence", r"renseignement de menace"],
+    "Incident Response": [r"incident response", r"réponse aux incidents"],
+    "Malware Analysis": [r"malware analysis", r"analyse de malware"],
+    "Reverse Engineering": [r"reverse engineering", r"rétro-ingénierie"],
+    "Forensics": [r"forensics", r"digital forensics", r"forensique"],
+    "SOC": [r"\bsoc\b", r"security operations"],
+    "Cryptography": [r"cryptography", r"cryptographie", r"encryption"],
+    "PKI": [r"\bpki\b", r"public key infrastructure"],
+    "OWASP": [r"owasp", r"top 10"],
+
+    # CTF platforms
+    "Hack The Box": [r"hack the box", r"htb"],
+    "TryHackMe": [r"tryhackme", r"thm"],
+    "HackTheBox": [r"hackthebox"],
+
+    # Security Certifications & Standards
+    "CISSP": [r"cissp"],
+    "CEH": [r"ceh", r"certified ethical hacker"],
+    "OSCP": [r"oscp", r"offensive security"],
+    "Security+": [r"security\+", r"comptiа\+"],
+    "CySA+": [r"cysa\+"],
+    "ISO 27001": [r"iso 27001", r"iso27001"],
+    "NIST": [r"nist", r"cybersecurity framework"],
 
     # Soft Skills & Langues
     "Anglais": [r"anglais", r"english"],
@@ -64,23 +99,6 @@ KEYWORDS = {
     "Curiosité": [r"curiosité", r"curieux"],
     "Travail d'équipe": [r"travail d'équipe", r"team player", r"esprit d'équipe"],
     "Gestion de projet": [r"gestion de projet", r"chef de projet"],
-
-    #Outils cybersécurité offensifs
-    "Nmap": [r"nmap"],
-    "Metasploit": [r"metasploit"],
-    "Wireshark": [r"wireshark"],
-    "Burp Suite": [r"burp suite", r"burpsuite"],
-    "Kali Linux": [r"kali linux", r"kalilinux"],
-
-    #CTF platforms
-    "Hack The Box": [r"hack the box", r"htb"],
-    "TryHackMe": [r"tryhackme", r"thm"],
-
-    #outils cybersécurité défensifs
-    "Splunk": [r"splunk"],
-    "ELK": [r"elk", r"elasticsearch", r"logstash", r"kibana"],
-    "SIEM": [r"siem"],
-    "EDR": [r"edr"],
 }
 
 EDUCATION_LEVELS = {
@@ -114,11 +132,6 @@ def extract_experience(text):
     
     text_lower = text.lower()
     
-    # Recherche de motifs "X années", "X ans"
-    # Junior: < 2 ans, débutant
-    # Confirmé: 2-5 ans
-    # Senior: > 5 ans
-    
     # Motifs explicites
     if re.search(r"débutant|junior|première expérience", text_lower):
         return "Junior"
@@ -127,7 +140,7 @@ def extract_experience(text):
     if match_years:
         try:
             years = int(match_years.group(1))
-            if years < 2:
+            if years <= 2:
                 return "Junior"
             elif years <= 5:
                 return "Confirmé"
@@ -136,10 +149,10 @@ def extract_experience(text):
         except:
             pass
             
-    if re.search(r"senior|expert|lead", text_lower):
+    if re.search(r"senior|expert|lead|manager", text_lower):
         return "Senior"
         
-    if re.search(r"confirmé|expérimenté", text_lower):
+    if re.search(r"confirmé|expérimenté|experienced", text_lower):
         return "Confirmé"
         
     return "Non précisé"
@@ -324,7 +337,7 @@ def main():
     print(f"Fusion compétences terminée. Shape: {df_enriched.shape}")
     
     # Extraire Expérience & Formation
-    df_enriched['experience_estimee'] = df_enriched['description'].apply(extract_experience)
+    df_enriched['experience_estimee'] = (df_enriched['titre'].astype(str) + " " + df_enriched['description'].astype(str)).apply(extract_experience)
     df_enriched['niveau_etude_estime'] = df_enriched['description'].apply(extract_education)
     
     # 4. Sauvegarde Format Large (Tout en un)
@@ -376,9 +389,9 @@ def main():
     # Garder que les lignes où Present = 1
     df_long = df_long[df_long['Present'] == 1].drop(columns=['Present'])
     
-    output_long = os.path.join(data_dir, "skills_powerbi.csv")
-    df_long.to_csv(output_long, index=False, encoding='utf-8-sig')
-    print(f"Fichier Skills Long sauvegardé : {output_long} ({len(df_long)} lignes)")
+    # output_long = os.path.join(data_dir, "skills_powerbi.csv")
+    # df_long.to_csv(output_long, index=False, encoding='utf-8-sig')
+    # print(f"Fichier Skills Long sauvegardé : {output_long} ({len(df_long)} lignes)")
 
 if __name__ == "__main__":
     main()

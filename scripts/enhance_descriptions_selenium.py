@@ -4,10 +4,12 @@ import time
 import random
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 
 # Configuration
 INPUT_FILE = 'data/offres_apec_raw.csv'
@@ -16,14 +18,19 @@ BATCH_SIZE = 500
 MIN_DESC_LENGTH = 800  # On considère qu'en dessous de ça, c'est tronqué ou incomplet
 
 def init_driver():
-    options = webdriver.ChromeOptions()
+    options = webdriver.FirefoxOptions()
     options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--window-size=1920,1080')
-    options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
-    options.add_argument('--log-level=3')
-    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    options.add_argument('--width=1920')
+    options.add_argument('--height=1080')
+    options.set_preference(
+        'general.useragent.override',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0'
+    )
+    driver = webdriver.Firefox(
+        service=FirefoxService(GeckoDriverManager().install()),
+        options=options
+    )
+    return driver
 
 def get_full_description(driver, url):
     try:
@@ -88,22 +95,22 @@ def main():
     print(f"Total offres APEC: {len(df[df['source'] == 'APEC'])}")
     print(f"Offres nécessitant enrichissement: {len(indices_to_process)}")
     
-    # On limite au batch size
-    batch_indices = indices_to_process[:BATCH_SIZE]
-    print(f"Traitement de ce lot: {len(batch_indices)} offres.")
+    # # On limite au batch size
+    # batch_indices = indices_to_process[:BATCH_SIZE]
+    # print(f"Traitement de ce lot: {len(batch_indices)} offres.")
     
-    if not batch_indices:
-        print("Rien à faire.")
-        return
+    # if not batch_indices:
+    #     print("Rien à faire.")
+    #     return
 
     driver = init_driver()
     
     count = 0
     try:
-        for idx in batch_indices:
+        for idx in indices_to_process:
             row = df.loc[idx]
             url = row['lien']
-            print(f"[{count+1}/{len(batch_indices)}] Scraping {row['titre']} ({url})...")
+            print(f"[{count+1}/{len(indices_to_process)}] Scraping {row['titre']} ({url})...")
             
             full_desc = get_full_description(driver, url)
             

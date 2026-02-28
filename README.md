@@ -10,20 +10,28 @@ Ce projet vise à analyser le marché de l'emploi en Data Science en France à t
 *   **Traitement** : Nettoyage, structuration et enrichissement des données.
 *   **Analyse** : Visualisation interactive via Power BI pour identifier les tendances (salaires, compétences, localisation, types de contrats).
 
-## Structure du Projet
+## Setup
 
-*   `data/` : Contient les données brutes et traitées (`.csv`).
-*   `scripts/` : Scripts Python pour le scraping et le traitement des données.
-*   `dashboard/` : Rapports et fichiers Power BI (`.pbix`).
-*   `docs/` : Documentation du projet.
+Créer API France Travail [ici](https://francetravail.io/inscription)
 
-## Technologies Utilisées
+Enlever le .exemple sur le fichier .env.exemple et y insérer vos clés API
 
-*   **Python** (BeautifulSoup4, Selenium, Pandas)
-*   **Power BI** (Visualisation de données)
-*   **Git** (Gestion de version)
+Installer les dépendances Python suivantes :
 
-## Auteur
+```bash
+pip install pandas requests python-dotenv selenium webdriver-manager matplotlib wordcloud beautifulsoup4
+```
+
+Mettre à jour Les `KEYWORDS` dans les scrapers
+
+Lancer Main.py !
+
+PS : Le scraping sur APEC et WTTJ est normalement interdit par leur T&C donc il ne faut pas baisser le délai entre chaque requête au risque que votre IP soit bloquée
+
+## Auteurs
 
 **Liza Bérénice Makani**
 Étudiante Ingénieure - ESIEA (IA & Data Science)
+
+**Sunnier**
+Étudiant en cybersécurité

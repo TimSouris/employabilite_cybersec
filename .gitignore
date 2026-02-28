@@ -7,6 +7,11 @@ __pycache__/
 env/
 venv/
 .venv/
+bin/
+lib/
+lib64/
+share/
+pyvenv.cfg
 
 # Data (on commit pas les données brutes pour l'instant)
 data/*.csv
@@ -30,3 +35,4 @@ Thumbs.db
 *.tmp
 *.pbix.tmp
 .env
+lib64
